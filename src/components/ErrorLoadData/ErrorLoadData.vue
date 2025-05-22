@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { defineProps, defineEmits } from 'vue';
 
 const props = defineProps<{
   errorMessage?: string;
@@ -26,5 +25,5 @@ const onRetry = () => {
 </template>
 
 <style lang="scss">
-@import './ErrorLoadData.module.scss';
+@use './ErrorLoadData.module.scss';
 </style>

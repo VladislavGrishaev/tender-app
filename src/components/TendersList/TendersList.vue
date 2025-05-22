@@ -102,5 +102,5 @@ onMounted(loadTenders);
 </template>
 
 <style lang="scss">
-@import 'TendersList.module';
+@use 'TendersList.module';
 </style>

@@ -5,5 +5,5 @@
 </template>
 
 <style lang="scss" scoped>
-@import './Preloader.module.scss';
+@use './Preloader.module.scss';
 </style>

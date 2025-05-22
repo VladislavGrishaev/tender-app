@@ -33,5 +33,5 @@ const { tender } = props;
 
 
 <style lang="scss">
-@import './TenderCard.module.scss';
+@use './TenderCard.module.scss';
 </style>

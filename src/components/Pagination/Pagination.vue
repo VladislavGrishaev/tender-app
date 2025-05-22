@@ -48,5 +48,5 @@ const { pageNumbers, goToPage } = usePagination(totalPagesRef, currentPageRef, e
 
 
 <style lang="scss">
-@import './Pagination.module.scss';
+@use './Pagination.module.scss';
 </style>

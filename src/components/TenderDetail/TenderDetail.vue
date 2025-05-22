@@ -74,5 +74,5 @@ const goBack = () => {
 
 
 <style lang="scss">
-@import './TenderDetail.module.scss';
+@use './TenderDetail.module.scss';
 </style>

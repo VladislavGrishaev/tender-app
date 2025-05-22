@@ -26,6 +26,6 @@ const onSubmit = (e: Event) => {
 </template>
 
 <style lang="scss">
-@import './SearchForm.module.scss';
+@use './SearchForm.module.scss';
 </style>
 
