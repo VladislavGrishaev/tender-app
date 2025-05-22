@@ -6,10 +6,12 @@ import Preloader from "../Preloader/Preloader.vue";
 import TenderCard from '../TenderCard/TenderCard.vue';
 import SearchForm from '../SearchForm/SearchForm.vue';
 import Pagination from "@/components/Pagination/Pagination.vue";
+import ErrorLoadData from '@/components/ErrorLoadData/ErrorLoadData.vue';  // импорт компонента ошибки
 
 const allTenders = ref<Tender[]>([]);
 const tenders = ref<Tender[]>([]);
 const isLoading = ref(false);
+const isError = ref(false);               // состояние ошибки загрузки
 const currentPage = ref(1);
 const totalPages = ref(1);
 const pageSize = 30;
@@ -23,12 +25,14 @@ const paginateTenders = () => {
 
 const loadTenders = async () => {
   isLoading.value = true;
+  isError.value = false;          // сброс ошибки перед загрузкой
   try {
     const res = await fetchTenders();
     allTenders.value = res.data;
     paginateTenders();
   } catch (e) {
     console.error(e);
+    isError.value = true;          // если ошибка — показать ошибку
   } finally {
     isLoading.value = false;
   }
@@ -38,7 +42,6 @@ onMounted(loadTenders);
 watch(currentPage, paginateTenders);
 </script>
 
-
 <template>
 		<div class="tenders-view">
 				<h1 class="tenders-view__title">Список тендеров</h1>
@@ -46,25 +49,29 @@ watch(currentPage, paginateTenders);
 
 				<Preloader v-if="isLoading" />
 
-				<TransitionGroup
-								v-else
-								name="cards"
-								tag="div"
-								class="tenders-view__grid"
-				>
-						<TenderCard
-										v-for="tender in tenders"
-										:key="tender.id"
-										:tender="tender"
-										class="tenders-view__card"
-						/>
-				</TransitionGroup>
+				<ErrorLoadData v-else-if="isError" @retry="loadTenders" />
 
-				<Pagination
-								:current-page="currentPage"
-								:total-pages="totalPages"
-								@update:page="(page) => (currentPage = page)"
-				/>
+				<!-- Показываем контент, если нет загрузки и нет ошибки -->
+				<div v-else class="tenders-view__wrap">
+						<TransitionGroup
+										name="cards"
+										tag="div"
+										class="tenders-view__grid"
+						>
+								<TenderCard
+												v-for="tender in tenders"
+												:key="tender.id"
+												:tender="tender"
+												class="tenders-view__card"
+								/>
+						</TransitionGroup>
+
+						<Pagination
+										:current-page="currentPage"
+										:total-pages="totalPages"
+										@update:page="(page) => (currentPage = page)"
+						/>
+				</div>
 		</div>
 </template>
 
