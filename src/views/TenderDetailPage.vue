@@ -1,13 +1,8 @@
-<template>
-
-</template>
-
-<script>
-export default {
-  name: "TenderDetailPage"
-}
+<script setup lang="ts">
+import TenderDetail from '../components/TenderDetail/TenderDetail.vue';
 </script>
 
-<style scoped>
 
-</style>
+<template>
+		<TenderDetail />
+</template>

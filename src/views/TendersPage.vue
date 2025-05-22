@@ -1,13 +1,10 @@
-<template>
-
-</template>
-
-<script>
-export default {
-  name: "TendersPage"
-}
+<script setup lang="ts">
+import TendersView from '@/components/TendersView/TendersView.vue';
+import Pagination from "@/components/Pagination/Pagination.vue";
 </script>
 
-<style scoped>
+<template>
+	<TendersView />
 
-</style>
+	<Pagination />
+</template>
