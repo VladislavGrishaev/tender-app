@@ -92,7 +92,14 @@ onMounted(loadTenders);
 								/>
 						</TransitionGroup>
 
+						<p
+										v-if="tenders.length === 0"
+										class="tenders__not-found">
+								Тендеры не найдены
+						</p>
+
 						<Pagination
+										v-if="totalPages > 1"
 										:current-page="currentPage"
 										:total-pages="totalPages"
 										@update:page="(page) => (currentPage = page)"
