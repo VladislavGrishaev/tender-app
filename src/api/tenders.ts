@@ -1,6 +1,7 @@
-import type { TendersResponse } from '@/types/tenders';
+import type {Tender, TendersResponse} from '@/types/tenders';
 
 const API_URL = 'https://api.test-webest.ru/list/';
+const API_URL_ELEMENT = 'https://api.test-webest.ru/element/';
 
 export async function fetchTenders(): Promise<TendersResponse> {
   try {
@@ -22,6 +23,28 @@ export async function fetchTenders(): Promise<TendersResponse> {
       total: json.total,
       page_count: json.page_count,
       page_number: json.page_number
+    };
+  } catch (error) {
+    console.error('Ошибка API:', error);
+    throw error;
+  }
+}
+
+export async function fetchTenderById(id: number): Promise<Tender> {
+  try {
+    const response = await fetch(`${API_URL_ELEMENT}?id=${id}`);
+
+    if (!response.ok) throw new Error('Ошибка загрузки данных тендера');
+
+    const json = await response.json();
+
+    return {
+      id: json.id,
+      title: json.title,
+      description: json.description,
+      date: json.date,
+      phase_en: json.phase_en,
+      awarded_value: json.awarded_value,
     };
   } catch (error) {
     console.error('Ошибка API:', error);

@@ -10,7 +10,7 @@ const { tender } = props;
 </script>
 
 <template>
-		<article class="tender-card">
+		<router-link :to="`/tender/${tender.id}`" class="tender-card">
 				<div class="tender-card__header">
 						<h3 class="tender-card__title">{{ tender.title }}</h3>
 						<span class="tender-card__status">{{ tender.phase_en }}</span>
@@ -28,7 +28,7 @@ const { tender } = props;
         {{ tender.awarded_value ? tender.awarded_value + ' Р' : '—' }}
       </span>
 				</div>
-		</article>
+		</router-link>
 </template>
 
 
