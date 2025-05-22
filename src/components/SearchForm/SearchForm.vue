@@ -1,19 +1,29 @@
-<script setup>
+<script setup lang="ts">
+import { ref } from 'vue';
+
+const emit = defineEmits<{
+  (e: 'search', query: string): void;
+}>();
+
+const searchText = ref('');
+
+const onSubmit = (e: Event) => {
+  e.preventDefault();
+  emit('search', searchText.value.trim());
+};
 </script>
 
 <template>
-		<form class="search-form">
+		<form @submit="onSubmit" class="search-form">
 				<input
-								class="search-form__input"
+								v-model="searchText"
 								type="text"
 								placeholder="Поиск по названию тендера"
-				>
-				<button class="search-form__button" type="submit">
-						<span class="search-form__button-text">Найти</span>
-				</button>
+								class="search-form__input"
+				/>
+				<button type="submit" class="search-form__button">Найти</button>
 		</form>
 </template>
-
 
 <style lang="scss">
 @import './SearchForm.module.scss';
