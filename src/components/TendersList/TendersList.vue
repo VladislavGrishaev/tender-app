@@ -15,6 +15,7 @@ const isError = ref(false);               // состояние ошибки з�
 const currentPage = ref(1);
 const totalPages = ref(1);
 const pageSize = 30;
+const tendersWrapRef = ref<HTMLElement | null>(null);
 
 const paginateTenders = () => {
   const start = (currentPage.value - 1) * pageSize;
@@ -25,44 +26,54 @@ const paginateTenders = () => {
 
 const loadTenders = async () => {
   isLoading.value = true;
-  isError.value = false;          // сброс ошибки перед загрузкой
+  isError.value = false;
   try {
     const res = await fetchTenders();
     allTenders.value = res.data;
     paginateTenders();
-  } catch (e) {
+  }
+  catch (e) {
     console.error(e);
-    isError.value = true;          // если ошибка — показать ошибку
-  } finally {
+    isError.value = true;
+  }
+  finally {
     isLoading.value = false;
   }
 };
 
 onMounted(loadTenders);
-watch(currentPage, paginateTenders);
+watch(currentPage, () => {
+  paginateTenders();
+
+  if (tendersWrapRef.value) {
+    tendersWrapRef.value.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  } else {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+});
 </script>
 
 <template>
-		<div class="tenders-view">
-				<h1 class="tenders-view__title">Список тендеров</h1>
-				<SearchForm class="tenders-view__search" />
+		<div class="tenders">
+				<h1 class="tenders__title">Список тендеров</h1>
+				<SearchForm class="tenders__search" />
 
 				<Preloader v-if="isLoading" />
-
 				<ErrorLoadData v-else-if="isError" @retry="loadTenders" />
 
-				<!-- Показываем контент, если нет загрузки и нет ошибки -->
-				<div v-else class="tenders-view__wrap">
+				<div v-else
+				     ref="tendersWrapRef"
+				     class="tenders__wrap">
 						<TransitionGroup
 										name="cards"
 										tag="div"
-										class="tenders-view__grid"
+										class="tenders__list"
 						>
 								<TenderCard
 												v-for="tender in tenders"
 												:key="tender.id"
 												:tender="tender"
-												class="tenders-view__card"
+												class="tenders__card"
 								/>
 						</TransitionGroup>
 
@@ -76,5 +87,5 @@ watch(currentPage, paginateTenders);
 </template>
 
 <style lang="scss">
-@import './TendersView.module.scss';
+@import 'TendersList.module';
 </style>

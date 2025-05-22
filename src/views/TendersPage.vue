@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import TendersView from '@/components/TendersView/TendersView.vue';
+import TendersList from '@/components/TendersList/TendersList.vue';
 </script>
 
 <template>
-	<TendersView />
+	<TendersList />
 </template>
