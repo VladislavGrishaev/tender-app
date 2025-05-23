@@ -36,7 +36,13 @@ const { paginated: tenders, totalPages } = useDataPagination(
 const { saveScrollPosition, restoreScrollPosition, scrollToElement } = useScrollMemory(headerHeight);
 
 
-const isEmptyResult = computed(() => !isLoading.value && filteredTenders.value.length === 0);
+const isEmptyResult = computed(() => {
+  return !isLoading.value &&
+    filteredTenders.value.length === 0 &&
+    searchQuery.value.trim().length >= 3;
+});
+
+
 const emptyResultMessage = computed(() =>
   allTenders.value.length === 0
     ? 'Список тендеров пока пуст'
@@ -50,11 +56,6 @@ const goToTender = (id: string | number) => {
   router.push({ name: 'TenderDetail', params: { id: String(id) } });
 };
 
-const searchTenders = (query: string) => {
-  updateQuery(query);
-  currentPage.value = 1;
-  sessionStorage.setItem(CURRENT_PAGE_KEY, '1');
-};
 
 const clearSearch = () => {
   clearQuery();
@@ -74,6 +75,13 @@ onBeforeUnmount(() => {
   sessionStorage.setItem('tenders-current-page', String(currentPage.value));
 });
 
+watch(searchQuery, (newQuery) => {
+  updateQuery(newQuery);
+  currentPage.value = 1;
+  sessionStorage.setItem(CURRENT_PAGE_KEY, '1');
+});
+
+
 watch(currentPage, () => {
   sessionStorage.setItem('tenders-current-page', String(currentPage.value));
   if (tendersWrapRef.value) {
@@ -88,7 +96,6 @@ watch(currentPage, () => {
 						<h1 class="tenders__title">Список тендеров</h1>
 						<SearchForm
 										v-model="searchQuery"
-										@search="searchTenders"
 						/>
 				</div>
 				<div class="tenders__content container">
