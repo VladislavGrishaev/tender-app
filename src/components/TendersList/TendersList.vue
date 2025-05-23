@@ -89,8 +89,11 @@ onMounted(loadTenders);
 <template>
 		<div class="tenders">
 				<h1 class="tenders__title">Список тендеров</h1>
-				<SearchForm class="tenders__search" @search="searchTenders" />
-
+				<SearchForm
+								v-model="searchQuery"
+								@search="searchTenders"
+								class="tenders__search"
+				/>
 				<Preloader v-if="isLoading" />
 				<ErrorLoadData v-else-if="isError" @retry="loadTenders" />
 

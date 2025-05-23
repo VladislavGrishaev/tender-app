@@ -1,11 +1,29 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
+
+const props = defineProps<{
+  modelValue: string;
+}>();
 
 const emit = defineEmits<{
   (e: 'search', query: string): void;
+  (e: 'update:modelValue', value: string): void;
 }>();
 
-const searchText = ref('');
+
+const searchText = ref(props.modelValue);
+
+watch(
+  () => props.modelValue,
+  (newVal) => {
+    searchText.value = newVal;
+  }
+);
+
+const onInput = (e: Event) => {
+  const value = (e.target as HTMLInputElement).value;
+  emit('update:modelValue', value);
+};
 
 const onSubmit = (e: Event) => {
   e.preventDefault();
@@ -13,10 +31,12 @@ const onSubmit = (e: Event) => {
 };
 </script>
 
+
 <template>
 		<form @submit="onSubmit" class="search-form">
 				<input
-								v-model="searchText"
+								:value="searchText"
+								@input="onInput"
 								type="text"
 								placeholder="Поиск по названию тендера"
 								class="search-form__input"
@@ -24,6 +44,7 @@ const onSubmit = (e: Event) => {
 				<button type="submit" class="search-form__button">Найти</button>
 		</form>
 </template>
+
 
 <style lang="scss">
 @use './SearchForm.module.scss';
