@@ -51,10 +51,28 @@ const loadTenders = async () => {
   }
 };
 
+const isEmptyResult = computed(() => {
+  return !isLoading.value && !isError.value && tenders.value.length === 0;
+});
+
+const emptyResultMessage = computed(() => {
+  const query = searchQuery.value.trim();
+  return query
+    ? `По запросу «${query}» ничего не найдено`
+    : 'Нет доступных тендеров';
+});
+
+
 const searchTenders = (query: string) => {
   searchQuery.value = query;
   currentPage.value = 1;
 };
+
+const clearSearch = () => {
+  searchQuery.value = '';
+  currentPage.value = 1;
+};
+
 
 watch(currentPage, () => {
   if (tendersWrapRef.value) {
@@ -92,11 +110,22 @@ onMounted(loadTenders);
 								/>
 						</TransitionGroup>
 
-						<p
-										v-if="tenders.length === 0"
-										class="tenders__not-found">
-								Тендеры не найдены
-						</p>
+						<div
+										v-if="isEmptyResult"
+										class="tenders__not-found"
+						>
+								<p class="tenders__not-found-text">
+										{{ emptyResultMessage }}
+								</p>
+								<button
+												v-if="searchQuery"
+												@click="clearSearch"
+												class="tenders__not-found-button"
+								>
+										Сбросить поиск
+								</button>
+						</div>
+
 
 						<Pagination
 										v-if="totalPages > 1"
