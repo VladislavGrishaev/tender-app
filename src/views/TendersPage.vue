@@ -3,5 +3,7 @@ import TendersList from '@/components/TendersList/TendersList.vue';
 </script>
 
 <template>
-	<TendersList />
+	<div class="container">
+			<TendersList />
+	</div>
 </template>

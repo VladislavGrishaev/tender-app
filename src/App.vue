@@ -3,16 +3,17 @@ import {RouterView} from 'vue-router';
 </script>
 
 <template>
-		<div class="container">
-				<Transition name="fade" mode="out-in">
-						<router-view />
-				</Transition>
-		</div>
+		<router-view v-slot="{ Component }">
+				<transition name="fade" mode="out-in">
+						<component :is="Component" />
+				</transition>
+		</router-view>
 </template>
+
 
 <style scoped>
 .fade-enter-active, .fade-leave-active {
-    transition: opacity 1.5s ease;
+    transition: opacity 0.3s ease;
 }
 
 .fade-enter-from, .fade-leave-to {
