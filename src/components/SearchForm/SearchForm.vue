@@ -25,15 +25,14 @@ const onInput = (e: Event) => {
   emit('update:modelValue', value);
 };
 
-const onSubmit = (e: Event) => {
-  e.preventDefault();
+const onSubmit = () => {
   emit('search', searchText.value.trim());
 };
 </script>
 
 
 <template>
-		<form @submit="onSubmit" class="search-form">
+		<form @submit.prevent="onSubmit" class="search-form">
 				<input
 								:value="searchText"
 								@input="onInput"
