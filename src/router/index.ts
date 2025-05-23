@@ -12,7 +12,7 @@ const routes = [
   },
   {
     path: '/tender/:id',
-    name: 'TenderDetailPage',
+    name: 'TenderDetail',
     component: TenderDetailPage,
     props: true,
   },

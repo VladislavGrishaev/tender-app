@@ -32,16 +32,18 @@ const onSubmit = () => {
 
 
 <template>
-		<form @submit.prevent="onSubmit" class="search-form">
-				<input
-								:value="searchText"
-								@input="onInput"
-								type="text"
-								placeholder="Поиск по названию тендера"
-								class="search-form__input"
-				/>
-				<button type="submit" class="search-form__button">Найти</button>
-		</form>
+		<div class="search-form">
+				<form @submit.prevent="onSubmit" class="search-form__form">
+						<input
+										:value="searchText"
+										@input="onInput"
+										type="text"
+										placeholder="Поиск по названию тендера"
+										class="search-form__input"
+						/>
+						<button type="submit" class="search-form__button">Найти</button>
+				</form>
+		</div>
 </template>
 
 
